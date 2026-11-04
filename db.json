@@ -1,5 +1,1 @@
-{
-  "gifs": [
-    { "id": "1", "title": "Happy cat", "url": "https://example.com/cat.gif", "tags": ["cat", "happy"] }
-  ]
-}
+  { "collectionImgs": [], "collectionGifs": [], "collectionMemes": [], "favorites": [] }
