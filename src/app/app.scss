@@ -1,0 +1,44 @@
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+  color: inherit;
+}
+
+.nav {
+  display: flex;
+  gap: 1.25rem;
+
+  a {
+    text-decoration: none;
+    color: #555;
+    padding-bottom: 0.25rem;
+    border-bottom: 2px solid transparent;
+
+    &:hover {
+      color: #000;
+    }
+
+    &.active {
+      color: #000;
+      font-weight: 600;
+      border-bottom-color: currentColor;
+    }
+  }
+}
+
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}

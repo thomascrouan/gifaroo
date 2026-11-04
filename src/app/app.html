@@ -1,1 +1,13 @@
-<router-outlet />
+<header class="header">
+  <a class="logo" routerLink="/">Gifaroo</a>
+
+  <nav class="nav" aria-label="Navigation principale">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Accueil</a>
+    <a routerLink="/collections" routerLinkActive="active">Collections</a>
+    <a routerLink="/favorites" routerLinkActive="active">Favoris</a>
+  </nav>
+</header>
+
+<main class="content">
+  <router-outlet />
+</main>
