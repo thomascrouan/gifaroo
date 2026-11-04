@@ -1,0 +1,61 @@
+.state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 2.5rem 1rem;
+  text-align: center;
+  color: #555;
+}
+
+.state--error {
+  color: #b00020;
+}
+
+.icon {
+  font-size: 2rem;
+}
+
+.text {
+  margin: 0;
+}
+
+.spinner {
+  width: 2rem;
+  height: 2rem;
+  border: 3px solid #ddd;
+  border-top-color: #333;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation-duration: 2.4s;
+  }
+}
+
+.retry {
+  padding: 0.5rem 1rem;
+  border: 1px solid currentColor;
+  border-radius: 0.375rem;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+
+  &:hover {
+    background: #b000200d;
+  }
+
+  &:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+}

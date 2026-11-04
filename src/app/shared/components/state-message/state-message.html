@@ -1,0 +1,19 @@
+<div class="state" [class]="'state--' + type()" [attr.role]="type() === 'error' ? 'alert' : 'status'">
+  @switch (type()) {
+    @case ('loading') {
+      <span class="spinner" aria-hidden="true"></span>
+    }
+    @case ('error') {
+      <span class="icon" aria-hidden="true">⚠️</span>
+    }
+    @case ('empty') {
+      <span class="icon" aria-hidden="true">🗂️</span>
+    }
+  }
+
+  <p class="text">{{ text() }}</p>
+
+  @if (type() === 'error') {
+    <button type="button" class="retry" (click)="retry.emit()">Réessayer</button>
+  }
+</div>
