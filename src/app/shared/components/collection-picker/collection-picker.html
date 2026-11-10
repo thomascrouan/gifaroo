@@ -1,0 +1,59 @@
+@if (open()) {
+  <div class="backdrop" (click)="onClose()"></div>
+  <div
+    #panel
+    class="panel"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="picker-title"
+    tabindex="-1"
+  >
+    <div class="panel__header">
+      <h2 id="picker-title">Ajouter à une collection</h2>
+      <button type="button" class="icon-btn" aria-label="Fermer" (click)="onClose()">
+        <svg class="panel__icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7 7l10 10M17 7L7 17" />
+        </svg>
+      </button>
+    </div>
+
+    <ul class="panel__list">
+      @for (collection of collections(); track collection.id) {
+        <li>
+          @if (containingIds().has(collection.id)) {
+            <button type="button" class="panel__item" disabled>
+              {{ collection.name }}
+              <span class="panel__meta panel__meta--done">
+                <svg class="panel__check" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 12.5l4.5 4.5L19 7.5" />
+                </svg>
+                Déjà dedans
+              </span>
+            </button>
+          } @else {
+            <button type="button" class="panel__item" (click)="onSelect(collection)">
+              {{ collection.name }}
+              <span class="panel__meta">
+                {{ gifCounts()[collection.id] ?? 0 }}
+                {{ (gifCounts()[collection.id] ?? 0) > 1 ? 'GIFs' : 'GIF' }}
+              </span>
+            </button>
+          }
+        </li>
+      } @empty {
+        <li class="panel__empty">
+          <p>Tu n'as encore aucune collection.</p>
+        </li>
+      }
+    </ul>
+
+    <div class="panel__footer">
+      <a class="panel__new" routerLink="/collections/new" (click)="onClose()">
+        <svg class="panel__icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 5v14M5 12h14" />
+        </svg>
+        Nouvelle collection
+      </a>
+    </div>
+  </div>
+}

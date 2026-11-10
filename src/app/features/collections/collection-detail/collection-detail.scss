@@ -1,0 +1,75 @@
+.icon {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.intro {
+  max-width: 640px;
+}
+
+.intro__title {
+  font-size: clamp(2.5rem, 7vw, 4rem);
+  line-height: 1.02;
+}
+
+.intro__description {
+  margin: 0.625rem 0 0;
+  font-size: 1.125rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+}
+
+.confirm {
+  max-width: 640px;
+  margin: 0 0 1.5rem;
+  padding: 0.875rem 1rem;
+  border-radius: var(--radius-md);
+  background: var(--color-danger-bg);
+
+  p {
+    margin: 0;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--color-danger-text);
+  }
+}
+
+.confirm__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.grid {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  columns: 5 200px;
+  column-gap: 1.25rem;
+
+  li {
+    margin-bottom: 1.25rem;
+    break-inside: avoid;
+  }
+
+  @media (max-width: 600px) {
+    columns: 2 140px;
+    column-gap: 0.75rem;
+
+    li {
+      margin-bottom: 0.75rem;
+    }
+  }
+}

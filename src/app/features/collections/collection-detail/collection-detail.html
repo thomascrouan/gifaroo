@@ -1,0 +1,116 @@
+<nav aria-label="Fil d'Ariane">
+  <ol class="breadcrumb">
+    <li><a routerLink="/collections">Collections</a></li>
+    @if (collection(); as collection) {
+      <li aria-current="page">{{ collection.name }}</li>
+    }
+  </ol>
+</nav>
+
+@if (loading()) {
+  <app-state-message type="loading" message="Chargement de la collection…" />
+} @else if (error(); as message) {
+  <app-state-message
+    type="error"
+    heading="Collection indisponible"
+    [message]="message"
+    (retry)="onReload()"
+  />
+} @else if (collection(); as collection) {
+  <div class="page-header">
+    <div class="intro">
+      <h1 class="intro__title">{{ collection.name }}</h1>
+      @if (collection.description) {
+        <p class="intro__description">{{ collection.description }}</p>
+      }
+      <p class="page-header__meta">
+        {{ gifs().length }} {{ gifs().length > 1 ? 'GIFs' : 'GIF'
+        }}@if (createdLabel(); as created) {, créée le {{ created }}}
+      </p>
+    </div>
+    <div class="actions">
+      <a class="btn" [routerLink]="['/collections', collection.id, 'edit']">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 20h4L19 9l-4-4L4 16v4z" />
+          <path d="M13.5 6.5l4 4" />
+        </svg>
+        Modifier
+      </a>
+      <button
+        type="button"
+        class="btn btn--ghost-danger"
+        [disabled]="confirmingDelete()"
+        (click)="onDeleteClick()"
+      >
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 7h14M10 7V5h4v2M7 7l1 12h8l1-12" />
+        </svg>
+        Supprimer la collection
+      </button>
+    </div>
+  </div>
+
+  @if (confirmingDelete()) {
+    <div class="confirm" role="alert">
+      <p>
+        Supprimer « {{ collection.name }} » ? Ses GIFs seront retirés de la collection.
+      </p>
+      <div class="confirm__actions">
+        <button type="button" class="btn" [disabled]="deleting()" (click)="onCancelDelete()">
+          Annuler
+        </button>
+        <button
+          type="button"
+          class="btn btn--danger"
+          [disabled]="deleting()"
+          (click)="onConfirmDelete()"
+        >
+          {{ deleting() ? 'Suppression…' : 'Supprimer' }}
+        </button>
+      </div>
+    </div>
+  }
+
+  @if (actionError(); as message) {
+    <p class="alert" role="alert">{{ message }}</p>
+  }
+
+  @if (gifs().length === 0) {
+    <app-state-message
+      type="empty"
+      heading="Collection vide"
+      message="Ajoute des GIFs depuis l'accueil ou tes favoris."
+    />
+  } @else {
+    <ul class="grid">
+      @for (item of gifs(); track item.id) {
+        <li>
+          <app-gif-card
+            [gif]="item.gif"
+            [isFavorite]="favoriteIds().has(item.gif.sourceId)"
+            [canAddToCollection]="false"
+            (favoriteToggled)="onFavoriteToggled($event)"
+          >
+            <button
+              type="button"
+              class="icon-btn"
+              [disabled]="removingId() === item.id"
+              [attr.aria-label]="'Retirer de la collection : ' + item.gif.title"
+              (click)="onRemoveClick(item)"
+            >
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 7l10 10M17 7L7 17" />
+              </svg>
+            </button>
+          </app-gif-card>
+        </li>
+      }
+    </ul>
+  }
+} @else {
+  <app-state-message
+    type="empty"
+    heading="Collection introuvable"
+    message="Cette collection n'existe pas."
+  />
+}

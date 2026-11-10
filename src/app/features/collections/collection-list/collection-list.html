@@ -1,0 +1,116 @@
+<div class="page-header">
+  <div>
+    <h1>Mes collections</h1>
+    @if (!loading() && !error()) {
+      <p class="page-header__meta">
+        {{ collections().length }} {{ collections().length > 1 ? 'collections' : 'collection' }}
+      </p>
+    }
+  </div>
+  <a class="btn btn--primary btn--large" routerLink="/collections/new">
+    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 5v14M5 12h14" />
+    </svg>
+    Nouvelle collection
+  </a>
+</div>
+
+@if (deleteError(); as message) {
+  <p class="alert" role="alert">{{ message }}</p>
+}
+
+@if (loading()) {
+  <app-state-message type="loading" message="Chargement des collections…" />
+} @else if (error(); as message) {
+  <app-state-message
+    type="error"
+    heading="Collections indisponibles"
+    [message]="message"
+    (retry)="onReload()"
+  />
+} @else {
+  <ul class="list">
+    @for (collection of collections(); track collection.id) {
+      <li class="card">
+        @let covers = coverGifs(collection.id);
+        <div class="card__cover" aria-hidden="true">
+          <span class="card__sheet card__sheet--left">
+            @if (covers[1]; as gif) {
+              <img [src]="gif.previewUrl" alt="" loading="lazy" />
+            }
+          </span>
+          <span class="card__sheet card__sheet--right">
+            @if (covers[2]; as gif) {
+              <img [src]="gif.previewUrl" alt="" loading="lazy" />
+            }
+          </span>
+          <span class="card__sheet card__sheet--front">
+            @if (covers[0]; as gif) {
+              <img [src]="gif.previewUrl" alt="" loading="lazy" />
+            }
+          </span>
+        </div>
+
+        <div class="card__body">
+          <h2 class="card__title">
+            <a [routerLink]="['/collections', collection.id]">{{ collection.name }}</a>
+          </h2>
+          @if (collection.description) {
+            <p class="card__description">{{ collection.description }}</p>
+          }
+        </div>
+
+        @if (pendingDeleteId() === collection.id) {
+          <div class="card__confirm" role="alert">
+            <p>Supprimer « {{ collection.name }} » ? Ses GIFs seront retirés de la collection.</p>
+            <div class="card__confirm-actions">
+              <button type="button" class="btn" [disabled]="deleting()" (click)="onCancelDelete()">
+                Annuler
+              </button>
+              <button
+                type="button"
+                class="btn btn--danger"
+                [disabled]="deleting()"
+                (click)="onConfirmDelete(collection.id)"
+              >
+                {{ deleting() ? 'Suppression…' : 'Supprimer' }}
+              </button>
+            </div>
+          </div>
+        } @else {
+          <div class="card__footer">
+            <p class="card__count">{{ gifCountLabel(collection.id) }}</p>
+            <a
+              class="icon-btn"
+              [routerLink]="['/collections', collection.id, 'edit']"
+              [attr.aria-label]="'Modifier la collection ' + collection.name"
+            >
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 20h4L19 9l-4-4L4 16v4z" />
+                <path d="M13.5 6.5l4 4" />
+              </svg>
+            </a>
+            <button
+              type="button"
+              class="icon-btn"
+              [attr.aria-label]="'Supprimer la collection ' + collection.name"
+              (click)="onDeleteClick(collection.id)"
+            >
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M5 7h14M10 7V5h4v2M7 7l1 12h8l1-12" />
+              </svg>
+            </button>
+          </div>
+        }
+      </li>
+    } @empty {
+      <li class="list__empty">
+        <app-state-message
+          type="empty"
+          heading="Aucune collection"
+          message="Crée ta première collection pour ranger tes GIFs."
+        />
+      </li>
+    }
+  </ul>
+}

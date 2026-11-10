@@ -1,0 +1,60 @@
+<div
+  class="state"
+  [class]="'state--' + type()"
+  [attr.role]="type() === 'error' ? 'alert' : 'status'"
+>
+  @switch (type()) {
+    @case ('loading') {
+      <p class="state__loading">{{ text() }}</p>
+      <div class="skeleton" aria-hidden="true">
+        <div class="skeleton__col">
+          <div class="skeleton__block" style="height: 150px"></div>
+          <div class="skeleton__block" style="height: 110px"></div>
+        </div>
+        <div class="skeleton__col">
+          <div class="skeleton__block" style="height: 100px"></div>
+          <div class="skeleton__block" style="height: 170px"></div>
+        </div>
+        <div class="skeleton__col">
+          <div class="skeleton__block" style="height: 180px"></div>
+          <div class="skeleton__block" style="height: 90px"></div>
+        </div>
+      </div>
+    }
+    @case ('error') {
+      <span class="state__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 4l9 16H3z" />
+          <path d="M12 10v4M12 17v.5" />
+        </svg>
+      </span>
+      @if (heading(); as heading) {
+        <p class="state__heading">{{ heading }}</p>
+        <p class="state__body">{{ text() }}</p>
+      } @else {
+        <p class="state__heading">{{ text() }}</p>
+      }
+      <button type="button" class="btn btn--primary" (click)="onRetryClick()">
+        <svg class="state__retry-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20 12a8 8 0 1 1-2.3-5.6" />
+          <path d="M20 4v5h-5" />
+        </svg>
+        Réessayer
+      </button>
+    }
+    @case ('empty') {
+      <span class="state__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="7" />
+          <path d="M20 20l-4.2-4.2" />
+        </svg>
+      </span>
+      @if (heading(); as heading) {
+        <p class="state__heading">{{ heading }}</p>
+        <p class="state__body">{{ text() }}</p>
+      } @else {
+        <p class="state__heading">{{ text() }}</p>
+      }
+    }
+  }
+</div>
