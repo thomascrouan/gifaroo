@@ -1,61 +1,103 @@
 .state {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 2.5rem 1rem;
-  text-align: center;
-  color: #555;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.875rem;
+  min-height: 16rem;
+  padding: 2rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
 }
 
-.state--error {
-  color: #b00020;
+.state--loading {
+  justify-content: flex-start;
+  padding: 1.25rem;
 }
 
-.icon {
-  font-size: 2rem;
-}
-
-.text {
+.state__loading {
   margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
 }
 
-.spinner {
-  width: 2rem;
-  height: 2rem;
-  border: 3px solid #ddd;
-  border-top-color: #333;
+.skeleton {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.875rem;
+  width: 100%;
+}
+
+.skeleton__col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.skeleton__block {
+  border-radius: 12px;
+  background: var(--color-skeleton);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.state__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
   border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
+  background: var(--color-marker);
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
+  svg {
+    width: 26px;
+    height: 26px;
+    fill: none;
+    stroke: var(--color-primary);
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .spinner {
-    animation-duration: 2.4s;
+.state--error .state__icon {
+  background: var(--color-danger-soft);
+
+  svg {
+    stroke: var(--color-danger);
   }
 }
 
-.retry {
-  padding: 0.5rem 1rem;
-  border: 1px solid currentColor;
-  border-radius: 0.375rem;
-  background: transparent;
-  color: inherit;
-  font: inherit;
-  cursor: pointer;
+.state__heading {
+  max-width: 24ch;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.875rem;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
 
-  &:hover {
-    background: #b000200d;
-  }
+.state__body {
+  max-width: 42ch;
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
 
-  &:focus-visible {
-    outline: 2px solid currentColor;
-    outline-offset: 2px;
-  }
+.state__retry-icon {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }

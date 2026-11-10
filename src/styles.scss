@@ -1,1 +1,264 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --color-primary: #1e2b8f;
+  --color-primary-hover: #0e1660;
+  --color-on-primary: #fff;
+  --color-text: #1e2b8f;
+  --color-text-muted: #4a5490;
+  --color-text-subtle: #6b7399;
+  --color-bg: #f3f4f8;
+  --color-surface: #fff;
+  --color-surface-soft: #eceef5;
+  --color-skeleton: #e3e6ef;
+  --color-hover: #f3f4f8;
+  --color-border: #d6d9e6;
+  --color-border-strong: #aab0cc;
+  --color-marker: #ffe14d;
+  --color-heart: #e8336d;
+  --color-danger: #c2264b;
+  --color-danger-text: #8c1734;
+  --color-danger-bg: #ffeef2;
+  --color-danger-soft: #ffe3ea;
+  --color-success: #145c3a;
+  --color-success-bg: #e3f5ec;
+  --color-focus: #1e2b8f;
+  --color-overlay: rgb(14 22 96 / 35%);
+
+  --font-display: 'Anton', Impact, sans-serif;
+  --font-body: 'Figtree', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --shadow-md: 0 20px 50px rgb(14 22 96 / 20%);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  line-height: 1.5;
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6vw, 3.5rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: 0.005em;
+  overflow-wrap: anywhere;
+}
+
+h2 {
+  line-height: 1.2;
+}
+
+a {
+  color: var(--color-primary);
+
+  &:hover {
+    color: var(--color-primary-hover);
+  }
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+::placeholder {
+  color: var(--color-text-subtle);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 3rem;
+  padding: 0 1.125rem;
+  border: 2px solid var(--color-primary);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-primary);
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s;
+
+  &:hover:not(:disabled) {
+    background: var(--color-hover);
+    color: var(--color-primary);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  svg {
+    flex-shrink: 0;
+  }
+}
+
+.btn--primary {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+
+  &:hover:not(:disabled) {
+    border-color: var(--color-primary-hover);
+    background: var(--color-primary-hover);
+    color: var(--color-on-primary);
+  }
+
+  &:disabled {
+    border-color: var(--color-skeleton);
+    background: var(--color-skeleton);
+    color: var(--color-text-muted);
+  }
+}
+
+.btn--danger {
+  border-color: var(--color-danger);
+  background: var(--color-danger);
+  color: var(--color-on-primary);
+
+  &:hover:not(:disabled) {
+    border-color: var(--color-danger-text);
+    background: var(--color-danger-text);
+    color: var(--color-on-primary);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+  }
+}
+
+.btn--large {
+  min-height: 3.25rem;
+  padding: 0 1.5rem;
+}
+
+.icon-btn {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-primary);
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background: var(--color-hover);
+    color: var(--color-primary);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.page-header__meta {
+  margin: 0.375rem 0 0;
+  font-size: 1rem;
+  color: var(--color-text-muted);
+}
+
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1.125rem;
+  padding: 0;
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+  list-style: none;
+
+  a {
+    font-weight: 600;
+  }
+
+  li + li::before {
+    content: '/';
+    margin-right: 0.5rem;
+  }
+}
+
+.alert,
+.notice {
+  margin: 0 0 1.25rem;
+  padding: 0.875rem 1rem;
+  border-radius: var(--radius-md);
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.alert,
+.notice--error {
+  background: var(--color-danger-bg);
+  color: var(--color-danger-text);
+}
+
+.notice {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.btn--ghost-danger {
+  border-color: transparent;
+  background: transparent;
+  color: var(--color-danger);
+
+  &:hover:not(:disabled) {
+    background: var(--color-danger-bg);
+    color: var(--color-danger);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+  }
+}

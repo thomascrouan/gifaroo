@@ -1,6 +1,101 @@
-@if (isEdit()) {
-  <h1>Modifier la collection {{ id() }}</h1>
+<nav aria-label="Fil d'Ariane">
+  <ol class="breadcrumb">
+    <li><a routerLink="/collections">Collections</a></li>
+    <li aria-current="page">{{ isEdit() ? 'Modifier la collection' : 'Nouvelle collection' }}</li>
+  </ol>
+</nav>
+
+<h1 class="title">{{ isEdit() ? 'Modifier la collection' : 'Nouvelle collection' }}</h1>
+
+@if (loading()) {
+  <app-state-message type="loading" message="Chargement…" />
+} @else if (error(); as message) {
+  <app-state-message
+    type="error"
+    heading="Collection indisponible"
+    [message]="message"
+    (retry)="onReload()"
+  />
+} @else if (isEdit() && !collection()) {
+  <app-state-message
+    type="empty"
+    heading="Collection introuvable"
+    message="Cette collection n'existe pas."
+  />
+  <p class="back"><a class="btn" routerLink="/collections">Retour aux collections</a></p>
 } @else {
-  <h1>Nouvelle collection</h1>
+  <form class="form" [formGroup]="collectionForm" (ngSubmit)="onSubmit()" novalidate>
+    @if (submitError(); as message) {
+      <p class="alert" role="alert">{{ message }}</p>
+    }
+
+    <div class="field">
+      <div class="field__top">
+        <label for="name">Nom</label>
+        <span class="field__count">{{ collectionForm.controls.name.value.length }} / 50</span>
+      </div>
+      <input
+        id="name"
+        type="text"
+        formControlName="name"
+        autocomplete="off"
+        [attr.aria-invalid]="
+          collectionForm.controls.name.touched && collectionForm.controls.name.invalid
+        "
+        aria-describedby="name-errors"
+      />
+      <div id="name-errors" class="field__errors" aria-live="polite">
+        @if (showError('name', 'required')) {
+          <p>Le nom est obligatoire</p>
+        }
+        @if (showError('name', 'minlength')) {
+          <p>2 caractères minimum</p>
+        }
+        @if (showError('name', 'maxlength')) {
+          <p>50 caractères maximum</p>
+        }
+        @if (showError('name', 'nameTaken')) {
+          <p>Une collection porte déjà ce nom</p>
+        }
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field__top">
+        <label for="description">Description <span class="field__optional">(facultatif)</span></label>
+        <span
+          class="field__count"
+          [class.field__count--over]="collectionForm.controls.description.value.length > 200"
+          >{{ collectionForm.controls.description.value.length }} / 200</span
+        >
+      </div>
+      <textarea
+        id="description"
+        rows="4"
+        formControlName="description"
+        [attr.aria-invalid]="
+          collectionForm.controls.description.touched && collectionForm.controls.description.invalid
+        "
+        aria-describedby="description-errors"
+      ></textarea>
+      <div id="description-errors" class="field__errors" aria-live="polite">
+        @if (showError('description', 'maxlength')) {
+          <p>200 caractères maximum</p>
+        }
+      </div>
+    </div>
+
+    <div class="form__actions">
+      <button
+        type="submit"
+        class="btn btn--primary btn--large"
+        [disabled]="collectionForm.invalid || saving()"
+      >
+        {{ submitLabel() }}
+      </button>
+      <a class="form__cancel" [routerLink]="isEdit() ? ['/collections', id()] : ['/collections']"
+        >Annuler</a
+      >
+    </div>
+  </form>
 }
-<p>Formulaire réactif.</p>

@@ -1,2 +1,43 @@
-<h1>Mes favoris</h1>
-<p>Liste des GIFs favoris.</p>
+<div class="page-header">
+  <h1>Mes favoris</h1>
+</div>
+
+@if (successMessage(); as message) {
+  <p class="notice" role="status">{{ message }}</p>
+}
+@if (errorMessage(); as message) {
+  <p class="alert" role="alert">{{ message }}</p>
+}
+
+@if (loading()) {
+  <app-state-message type="loading" message="Chargement des favoris…" />
+} @else if (error(); as message) {
+  <app-state-message
+    type="error"
+    heading="Favoris indisponibles"
+    [message]="message"
+    (retry)="onReload()"
+  />
+} @else if (gifs().length === 0) {
+  <app-state-message
+    type="empty"
+    heading="Pas encore de favoris"
+    message="Touche le cœur d'un GIF pour le retrouver ici."
+  />
+  <p class="cta"><a class="btn btn--primary" routerLink="/">Voir les tendances</a></p>
+} @else {
+  <app-gif-grid
+    [gifs]="gifs()"
+    [favoriteIds]="favoriteIds()"
+    (favoriteToggled)="onFavoriteToggled($event)"
+    (addToCollectionRequested)="onAddToCollectionRequested($event)"
+  />
+}
+
+<app-collection-picker
+  [collections]="collections()"
+  [gifCounts]="gifCounts()"
+  [containingIds]="containingIds()"
+  [(open)]="pickerOpen"
+  (collectionSelected)="onCollectionSelected($event)"
+/>

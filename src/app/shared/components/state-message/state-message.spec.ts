@@ -11,6 +11,7 @@ describe('StateMessage', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(StateMessage);
+    fixture.componentRef.setInput('type', 'loading');
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

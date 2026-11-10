@@ -1,0 +1,12 @@
+<ul class="grid">
+  @for (gif of gifs(); track gif.sourceId) {
+    <li>
+      <app-gif-card
+        [gif]="gif"
+        [isFavorite]="favoriteIds().has(gif.sourceId)"
+        (favoriteToggled)="onFavoriteToggled($event)"
+        (addToCollectionRequested)="onAddToCollectionRequested($event)"
+      />
+    </li>
+  }
+</ul>

@@ -9,15 +9,20 @@ const DEFAULT_MESSAGES: Record<StateType, string> = {
 };
 
 @Component({
+  imports: [],
   selector: 'app-state-message',
-  templateUrl: './state-message.html',
   styleUrl: './state-message.scss',
+  templateUrl: './state-message.html',
 })
 export class StateMessage {
-  readonly type = input.required<StateType>();
-  readonly message = input<string | null>(null);
+  type = input.required<StateType>();
+  heading = input<string | null>(null);
+  message = input<string | null>(null);
+  retry = output<void>();
 
-  readonly retry = output<void>();
+  protected readonly text = computed(() => this.message() || DEFAULT_MESSAGES[this.type()]);
 
-  readonly text = computed(() => this.message() || DEFAULT_MESSAGES[this.type()]);
+  protected onRetryClick(): void {
+    this.retry.emit();
+  }
 }

@@ -1,0 +1,88 @@
+<figure class="card">
+  <div class="card__media">
+    <img
+      class="card__image"
+      [src]="imageSrc()"
+      [alt]="gif().title || 'GIF sans titre'"
+      loading="lazy"
+      (error)="onImageError()"
+    />
+
+    <button
+      type="button"
+      class="card__fav"
+      [attr.aria-pressed]="isFavorite()"
+      [attr.aria-label]="favoriteLabel() + ' : ' + gif().title"
+      (click)="onFavoriteClick()"
+    >
+      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+        <path
+          d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"
+          stroke-width="2"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </button>
+  </div>
+
+  <figcaption class="card__footer">
+    <span class="card__title" [title]="gif().title">{{ gif().title || 'Sans titre' }}</span>
+
+    @if (canAddToCollection()) {
+      <button
+        type="button"
+        class="icon-btn"
+        [attr.aria-label]="'Ajouter à une collection : ' + gif().title"
+        (click)="onAddToCollectionClick()"
+      >
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <rect x="4" y="4" width="16" height="16" rx="4" />
+          <path d="M12 8.5v7M8.5 12h7" />
+        </svg>
+      </button>
+    }
+
+    <button
+      type="button"
+      class="icon-btn"
+      [class.icon-btn--success]="copyState() === 'copied'"
+      [class.icon-btn--error]="copyState() === 'error'"
+      [attr.aria-label]="'Copier le lien : ' + gif().title"
+      (click)="onCopyClick()"
+    >
+      @switch (copyState()) {
+        @case ('copied') {
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 12.5l4.5 4.5L19 7.5" />
+          </svg>
+        }
+        @case ('error') {
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M12 7.5v5.5M12 16.5v.5" />
+          </svg>
+        }
+        @default {
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1" />
+            <path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" />
+          </svg>
+        }
+      }
+    </button>
+
+    <ng-content />
+
+    <span class="visually-hidden" aria-live="polite">{{ copyMessage() }}</span>
+  </figcaption>
+</figure>

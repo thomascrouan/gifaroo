@@ -7,3 +7,8 @@ export interface Gif {
   url: string;
   previewUrl: string;
 }
+
+export interface GifPage {
+  gifs: Gif[];
+  hasNext: boolean;
+}

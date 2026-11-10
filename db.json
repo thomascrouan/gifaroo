@@ -1,1 +1,6 @@
-  { "collectionImgs": [], "collectionGifs": [], "collectionMemes": [], "favorites": [] }
+{
+  "collections": [],
+  "collectionGifs": [],
+  "favorites": [],
+  "$schema": "./node_modules/json-server/schema.json"
+}

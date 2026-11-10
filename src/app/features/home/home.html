@@ -1,2 +1,71 @@
-<h1>Accueil</h1>
-<p>Tendances et recherche Klipy.</p>
+<section class="hero">
+  <h1 class="hero__title">Trouve le bon GIF avant que la conversation passe à autre chose.</h1>
+
+  <div class="hero__search">
+    <app-search-bar [(query)]="query" />
+    <p class="hero__hint">
+      @if (showMinLengthHint()) {
+        Tape au moins 2 caractères pour lancer la recherche.
+      }
+    </p>
+  </div>
+</section>
+
+<section aria-labelledby="results-title">
+  <div class="results__header">
+    <h2 id="results-title" class="results__title">{{ title() }}</h2>
+    <p class="powered">Powered by KLIPY</p>
+  </div>
+
+  @if (successMessage(); as message) {
+    <p class="notice" role="status">{{ message }}</p>
+  }
+  @if (errorMessage(); as message) {
+    <p class="alert" role="alert">{{ message }}</p>
+  }
+
+  @if (loading()) {
+    <app-state-message type="loading" message="Chargement des GIFs…" />
+  } @else if (error(); as message) {
+    <app-state-message
+      type="error"
+      heading="Les GIFs n'ont pas pu être chargés"
+      [message]="message"
+      (retry)="onReload()"
+    />
+  } @else if (gifs().length === 0) {
+    <app-state-message type="empty" [heading]="emptyHeading()" [message]="emptyMessage()" />
+  } @else {
+    <app-gif-grid
+      [gifs]="gifs()"
+      [favoriteIds]="favoriteIds()"
+      (favoriteToggled)="onFavoriteToggled($event)"
+      (addToCollectionRequested)="onAddToCollectionRequested($event)"
+    />
+
+    @if (loadMoreError(); as message) {
+      <p class="alert" role="alert">{{ message }}</p>
+    }
+
+    @if (hasNext()) {
+      <div class="more">
+        <button
+          type="button"
+          class="btn btn--large"
+          [disabled]="loadingMore()"
+          (click)="onLoadMore()"
+        >
+          {{ loadingMore() ? 'Chargement…' : 'Voir plus de GIFs' }}
+        </button>
+      </div>
+    }
+  }
+</section>
+
+<app-collection-picker
+  [collections]="collections()"
+  [gifCounts]="gifCounts()"
+  [containingIds]="containingIds()"
+  [(open)]="pickerOpen"
+  (collectionSelected)="onCollectionSelected($event)"
+/>
